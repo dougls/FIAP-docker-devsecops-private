@@ -1,0 +1,16 @@
+# Usa uma imagem gigantesca com JDK, Maven e SO completo
+FROM maven:3.9-eclipse-temurin-21
+
+WORKDIR /app
+
+# Copia tudo de uma vez (não otimiza cache do Docker)
+COPY . .
+
+# Compila o código gerando o artefato
+RUN mvn clean package -DskipTests
+
+# Documenta a porta
+EXPOSE 8080
+
+# Executa como ROOT (falha de DevSecOps)
+CMD ["java", "-jar", "target/demo-0.0.1-SNAPSHOT.jar"]
